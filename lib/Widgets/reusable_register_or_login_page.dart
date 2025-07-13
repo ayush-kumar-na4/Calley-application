@@ -12,7 +12,7 @@ class ReusableRegisterOrLoginPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.primaryBackgroundColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 90, bottom: 70),
+        padding: const EdgeInsets.only(top: 90),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

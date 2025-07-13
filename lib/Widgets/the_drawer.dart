@@ -1,33 +1,22 @@
-import 'package:calley/Widgets/custom_list_tile.dart';
-import 'package:calley/pages/settings_page.dart';
+
 import 'package:calley/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class TheDrawer extends StatefulWidget {
-  const TheDrawer({super.key});
+  const TheDrawer({
+    super.key,
+    required this.userEmailId,
+    required this.userName,
+  });
+  final String userName;
+  final String userEmailId;
 
   @override
   State<TheDrawer> createState() => _TheDrawerState();
 }
 
 class _TheDrawerState extends State<TheDrawer> {
-  String? userName;
-  String? userEmailId;
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('username') ?? 'User';
-      userEmailId = prefs.getString('email') ?? 'Email';
-    });
-  }
-
   Widget _buildDrawerListTile({
     // required VoidCallback onTap,
     required String title,
@@ -98,7 +87,7 @@ class _TheDrawerState extends State<TheDrawer> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "$userName",
+                                text: widget.userName,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -119,7 +108,7 @@ class _TheDrawerState extends State<TheDrawer> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "$userEmailId",
+                          widget.userEmailId,
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -181,12 +170,7 @@ class _TheDrawerState extends State<TheDrawer> {
                     logo: Image.asset("assets/images/send_logs.png"),
                   ),
                   _buildDrawerListTile(
-                    ontap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SettingsPage()),
-                      );
-                    },
+                    ontap: () {},
                     title: "Settings",
                     logo: Image.asset("assets/images/settings.png"),
                   ),

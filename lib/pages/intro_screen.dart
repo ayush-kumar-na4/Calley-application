@@ -1,31 +1,40 @@
 import 'package:calley/Widgets/blue_button.dart';
 import 'package:calley/utils/app_colors.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class IntroScreen extends StatefulWidget {
-  const IntroScreen({super.key});
+  const IntroScreen({
+    super.key,
+    required this.userName,
+    required this.onStartCallingTaped,
+  });
+  final String userName;
+  final Function(int)? onStartCallingTaped;
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  String? userName;
-  String? userEmailId;
+  late YoutubePlayerController _controller;
+
   @override
   void initState() {
     super.initState();
-    loadUserData();
+    _controller = YoutubePlayerController(
+      initialVideoId:
+          YoutubePlayer.convertUrlToId(
+            "https://youtu.be/l36rG4HafMg?si=oPVl9fAz6FcydPfa",
+          )!,
+      flags: YoutubePlayerFlags(autoPlay: false, mute: false),
+    );
   }
 
-  Future<void> loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('username') ?? 'User';
-      userEmailId = prefs.getString('email') ?? 'Email';
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,7 +73,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "$userName",
+                            widget.userName,
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
@@ -126,9 +135,9 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(19),
-                          child: Image.asset(
-                            'assets/images/video_image.png',
-                            fit: BoxFit.fill,
+                          child: YoutubePlayer(
+                            controller: _controller,
+                            showVideoProgressIndicator: true,
                           ),
                         ),
                       ),
@@ -161,7 +170,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     child: BlueButton(
                       padding: 5,
                       buttonName: "Start Calling Now",
-                      onPressedButton: () {},
+                      onPressedButton:
+                          () => widget.onStartCallingTaped?.call(0),
                     ),
                   ),
                 ],

@@ -1,37 +1,31 @@
+import 'package:calley/pages/test_calls_list_page.dart';
 import 'package:calley/utils/app_colors.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({
+    super.key,
+    required this.userEmailId,
+    required this.userName,
+    required this.calls,
+  });
 
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  String? userName;
-  String? userEmailId;
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('username') ?? 'User';
-      userEmailId = prefs.getString('email') ?? 'Email';
-    });
-  }
+  final String userName;
+  final String userEmailId;
+  final List<Map<String, dynamic>> calls;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
@@ -418,36 +412,48 @@ class _SettingsPageState extends State<SettingsPage> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 15,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 26,
-                            vertical: 14,
-                          ),
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppColors.lightBlue,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Test List",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        TestCallsListPage(calls: calls),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 15,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 26,
+                              vertical: 14,
+                            ),
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppColors.lightBlue,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Test List",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              Spacer(),
-                              Image.asset(
-                                "assets/images/right-arrow.png",
-                                height: 30,
-                                width: 30,
-                              ),
-                            ],
+                                Spacer(),
+                                Image.asset(
+                                  "assets/images/right-arrow.png",
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

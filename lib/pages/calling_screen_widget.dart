@@ -2,31 +2,11 @@ import 'package:calley/Widgets/blue_button.dart';
 import 'package:calley/utils/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class CallingScreen extends StatefulWidget {
-  const CallingScreen({super.key});
+class CallingScreen extends StatelessWidget {
+  const CallingScreen({super.key, required this.userName});
 
-  @override
-  State<CallingScreen> createState() => _CallingScreenState();
-}
-
-class _CallingScreenState extends State<CallingScreen> {
-  String? userName;
-  String? userEmailId;
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('username') ?? 'User';
-      userEmailId = prefs.getString('email') ?? 'Email';
-    });
-  }
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +40,10 @@ class _CallingScreenState extends State<CallingScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "$userName",
+                        userName,
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                           color: AppColors.primaryContainer,
                         ),
                       ),

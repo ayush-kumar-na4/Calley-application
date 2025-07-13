@@ -38,4 +38,51 @@ class ApiService {
 
     return response;
   }
+
+  static Future<http.Response> sendOTP({required String email}) async {
+    final url = Uri.parse('$calleyBaseUrl/auth/send-otp');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({"email": email}),
+    );
+    return response;
+  }
+
+  static Future<http.Response> verifyOTP({
+    required String email,
+    required String otp,
+  }) async {
+    final url = Uri.parse('$calleyBaseUrl/auth/verify-otp');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({"email": email, "otp": otp}),
+    );
+    return response;
+  }
+
+  static Future<http.Response> getList({required String userid}) async {
+    final url = Uri.parse('$calleyBaseUrl/list?userId=$userid');
+
+    final response = await http.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    return response;
+  }
+
+  static Future<http.Response> getListDetails({required String userid}) async {
+    final url = Uri.parse('$calleyBaseUrl/list/$userid');
+
+    final response = await http.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    return response;
+  }
 }

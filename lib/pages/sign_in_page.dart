@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:calley/Widgets/blue_button.dart';
 import 'package:calley/Widgets/custom_text_field.dart';
 import 'package:calley/Widgets/reusable_register_or_login_page.dart';
@@ -7,7 +6,6 @@ import 'package:calley/pages/main_screen.dart';
 import 'package:calley/services/api_services.dart';
 import 'package:calley/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -47,17 +45,17 @@ class _SignInPageState extends State<SignInPage> {
         final username = data['user']['username'];
         final email = data['user']['email'];
         final userId = data['user']['_id'];
-        // Store in SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('username', username);
-        await prefs.setString('email', email);
-        await prefs.setString('userId', userId);
-
-        // Optionally store this info in SharedPreferences for later
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
+          MaterialPageRoute(
+            builder:
+                (context) => MainScreen(
+                  userEmail: email,
+                  userId: userId,
+                  userName: username,
+                ),
+          ),
         );
       } else {
         final error = jsonDecode(response.body)['message'] ?? 'Login failed';
@@ -78,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
     return ReusableRegisterOrLoginPage(
       child: Column(
         children: [
-          SizedBox(height: 138),
+          SizedBox(height: 120),
           Text(
             "Welcome",
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800),
@@ -91,7 +89,7 @@ class _SignInPageState extends State<SignInPage> {
               color: AppColors.secondaryTextColor,
             ),
           ),
-          SizedBox(height: 22),
+          SizedBox(height: 30),
           CustomTextField(
             keyboardType: TextInputType.emailAddress,
             hintText: "Email address",
@@ -140,6 +138,7 @@ class _SignInPageState extends State<SignInPage> {
                 buttonName: "Sign In",
                 onPressedButton: _handleLogin,
               ),
+          SizedBox(height: 70),
         ],
       ),
     );
