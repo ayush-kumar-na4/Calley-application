@@ -78,24 +78,6 @@ This project demonstrates my ability to:
 
 ---
 
-## 📂 Recommended Folder Structure
-
-```
-lib/
-├── core/
-│   └── theme, constants, utils
-├── features/
-│   ├── auth/
-│   ├── dashboard/
-│   ├── settings/
-│   └── shared/
-├── common/
-│   └── widgets/
-├── main.dart
-```
-
----
-
 ## 🔧 Future Enhancements
 
 - Integration with a real backend (Firebase, Supabase, etc.)
